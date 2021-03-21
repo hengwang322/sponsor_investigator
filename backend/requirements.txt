@@ -1,0 +1,5 @@
+Flask==1.1.2
+Flask-Cors==3.0.10
+numpy==1.19.2
+tensorflow==2.4.1
+waitress==1.4.4
