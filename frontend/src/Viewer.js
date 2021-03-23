@@ -65,10 +65,13 @@ class Viewer extends React.Component {
 
   componentDidUpdate(prevProps) {
     const props = this.props;
-    if (props.videoId !== prevProps.videoId) { this.setState({ videoId: props.videoId }); };
-    if (props.data !== prevProps.data) {
-      this.setState({ data: props.data, segment: -1 });
-      document.getElementById(-1).scrollIntoView({ 'block': 'end' });
+    if (props.videoId !== prevProps.videoId) {
+      this.setState({
+        videoId: props.videoId,
+        data: props.data,
+        segment: -1
+      });
+      document.getElementById('text-container').scrollTo(0, 0);
     };
   }
 
@@ -91,6 +94,12 @@ class Viewer extends React.Component {
     }
   };
 
+  onClickSegment = (i) => {
+    const player = this.state.player;
+    const seekTime = this.state.data[i]['start'];
+    player.seekTo(seekTime);
+  };
+
 
   render() {
     const { width, height, data, segment, isScroll } = this.state;
@@ -101,8 +110,9 @@ class Viewer extends React.Component {
         const isBold = segment === index ? "bold" : "normal";
         const color = makeColor(arrAvg(item['label']));
         return <div key={index} style={{ paddingTop: 3 }}>
-          <span id={-1} />
           <span
+            onClick={() => { this.onClickSegment(index); }}
+            className='clickable-text'
             id={index}
             style={{ backgroundColor: color, width: 450, fontWeight: isBold }}>
             {item['text']}
@@ -141,6 +151,7 @@ class Viewer extends React.Component {
             id='text-container'
             style={{ height: (cardHeight - 350), overflowY: 'scroll', padding: 10 }}
           >
+            <span id={-1} />
             {text}
           </div>
         </Card>
