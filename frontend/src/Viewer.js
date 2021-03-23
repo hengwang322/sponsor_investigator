@@ -66,7 +66,10 @@ class Viewer extends React.Component {
   componentDidUpdate(prevProps) {
     const props = this.props;
     if (props.videoId !== prevProps.videoId) { this.setState({ videoId: props.videoId }); };
-    if (props.data !== prevProps.data) { this.setState({ data: props.data, segment: -1 }); };
+    if (props.data !== prevProps.data) {
+      this.setState({ data: props.data, segment: -1 });
+      document.getElementById(-1).scrollIntoView({ 'block': 'end' });
+    };
   }
 
   onSwitchScroll = () => {
@@ -98,6 +101,7 @@ class Viewer extends React.Component {
         const isBold = segment === index ? "bold" : "normal";
         const color = makeColor(arrAvg(item['label']));
         return <div key={index} style={{ paddingTop: 3 }}>
+          <span id={-1} />
           <span
             id={index}
             style={{ backgroundColor: color, width: 450, fontWeight: isBold }}>
