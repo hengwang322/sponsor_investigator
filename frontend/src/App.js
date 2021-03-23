@@ -105,7 +105,7 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    window.addEventListener("resize", this.handleResize);
+    window.removeEventListener("resize", () => { });
   }
 
   handleResize = () => this.setState({ width: window.innerWidth });

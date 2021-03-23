@@ -10,7 +10,7 @@ class Viewer extends React.Component {
     this.scrollTimer = '';
     this.state = {
       isScroll: true,
-      segment: 0,
+      segment: -1,
       player: undefined,
       currentTime: 0,
       videoId: '',
@@ -46,8 +46,7 @@ class Viewer extends React.Component {
   endInterval = () => { clearInterval(this.interval); };
 
   componentDidMount() {
-    this.setState({ segment: 0, data: this.props.data });
-    // this.interval = setInterval(this.onUpdateSegment, 200);
+    this.setState({ segment: -1, data: this.props.data });
     document.getElementById('text-container')
       .addEventListener('scroll', this.handleScroll);
     window.addEventListener("resize", this.handleResize);
@@ -56,8 +55,8 @@ class Viewer extends React.Component {
   componentWillUnmount() {
     clearInterval(this.interval);
     document.getElementById('text-container')
-      .removeEventListener('scroll', this.handleScroll);
-    window.addEventListener("resize", this.handleResize);
+      .removeEventListener('scroll', () => { });
+    window.removeEventListener("resize", () => { });
   }
 
   handleResize = () => {
@@ -67,7 +66,7 @@ class Viewer extends React.Component {
   componentDidUpdate(prevProps) {
     const props = this.props;
     if (props.videoId !== prevProps.videoId) { this.setState({ videoId: props.videoId }); };
-    if (props.data !== prevProps.data) { this.setState({ data: props.data }); };
+    if (props.data !== prevProps.data) { this.setState({ data: props.data, segment: -1 }); };
   }
 
   onSwitchScroll = () => {
