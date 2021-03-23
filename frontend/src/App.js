@@ -54,11 +54,7 @@ class App extends React.Component {
     const API = process.env.REACT_APP_SPONSOR_API;
     fetch(API, {
       method: 'POST',
-      headers: {
-        "Accept": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 'vid': videoId })
     })
       .then(res => res.json())
