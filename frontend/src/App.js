@@ -129,7 +129,7 @@ class App extends React.Component {
     return (
       <div className='App'>
         {isLoaded ? undefined : <>
-          <img src={logo} className="App-logo" alt="logo" /><br /><br /><br />
+          <img src={logo} className="App-logo" alt="logo" style={{ margin: 20 }} />
           <h4>Detect sponsored segments in Youtube videos<br />
           With the power of machine learning!</h4>
         </>}
