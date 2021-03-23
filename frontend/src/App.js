@@ -126,8 +126,8 @@ class App extends React.Component {
       <div className='App'>
         {isLoaded ? undefined : <>
           <img src={logo} className="App-logo" alt="logo" style={{ margin: 20 }} />
-          <h4>Detect sponsored segments in Youtube videos<br />
-          With the power of machine learning!</h4>
+          <h2>Sponsor Investigator</h2>
+          <h4>Detect sponsored segments in Youtube videos<br />With the power of machine learning!</h4>
         </>}
         <span>
           <TextField
@@ -153,7 +153,7 @@ class App extends React.Component {
               disabled={loading}
               onClick={this.onClickSubmit}
               size={isLoaded ? 'small' : 'large'}>
-              {isLoaded ? 'Submit' : 'Submit & block sponsors!'}
+              {isLoaded ? 'Submit' : 'Submit & detect sponsorship!'}
             </Button>
             <Button
               variant="contained"
@@ -177,7 +177,7 @@ class App extends React.Component {
             variant="filled"
             severity="error"
             onClose={this.dismissAlert}>
-            <AlertTitle>Error</AlertTitle>
+            <AlertTitle>DOES NOT COMPUTE!</AlertTitle>
             {errMsg}
           </Alert>
         </Snackbar>
@@ -188,7 +188,7 @@ class App extends React.Component {
           onClick={this.onLoadingEnd}>
           <Card variant="outlined" style={{ padding: 40 }}>
             <CircularProgress style={{ padding: 10 }} />
-            <h3>{'Loading, please wait'}</h3>
+            <h3>{'BEEP BOOP. Processing...'}</h3>
           </Card>
         </Backdrop>
       </div>
