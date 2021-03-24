@@ -59,7 +59,7 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        if (data['error'] === undefined) {
+        if (data['errorMessage'] === undefined) {
           this.setState({
             data: data['transcript'],
             videoId: data['videoId'],
@@ -67,7 +67,7 @@ class App extends React.Component {
             loading: false,
           });
         } else {
-          this.showAlert(data['error']);
+          this.showAlert(data['errorMessage']);
         }
       })
       .catch(e => this.showAlert(e.message));
