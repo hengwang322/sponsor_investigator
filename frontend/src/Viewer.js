@@ -4,8 +4,7 @@ import Switch from '@material-ui/core/Switch';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import InfoIcon from '@material-ui/icons/Info';
-import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles } from '@material-ui/core/styles';
+import Popover from '@material-ui/core/Popover';
 
 class Viewer extends React.Component {
   constructor(props) {
@@ -20,7 +19,8 @@ class Viewer extends React.Component {
       videoId: '',
       data: [],
       width: window.innerWidth,
-      height: window.innerHeight
+      height: window.innerHeight,
+      anchorEl: null
     };
   }
 
@@ -104,9 +104,12 @@ class Viewer extends React.Component {
     player.seekTo(seekTime);
   };
 
+  onTooltipOpen = (e) => this.setState({ anchorEl: e.currentTarget });
+
+  onTooltipClose = () => this.setState({ anchorEl: null });
 
   render() {
-    const { width, height, data, segment, isScroll } = this.state;
+    const { width, height, data, segment, isScroll, anchorEl } = this.state;
     const arrAvg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
     const makeColor = (opacity = 1) => `rgba(100,149,237, ${opacity})`;
     const text = data.map(
@@ -126,15 +129,6 @@ class Viewer extends React.Component {
 
     const cardHeight = (height < 800) ? (height * 0.8) : (height * 0.85);
     const cardWidth = (width < 500) ? (width * 0.9) : 500;
-    const HtmlTooltip = withStyles(() => ({
-      tooltip: {
-        backgroundColor: 'white',
-        color: 'black',
-        fontSize: 14,
-        border: '1px solid #dadde9',
-        maxWidth: 450
-      },
-    }))(Tooltip);
 
     const tooltip = <React.Fragment>
       <p style={{ margin: 10, lineHeight: 1.75 }}>
@@ -159,14 +153,35 @@ class Viewer extends React.Component {
             onPause={this.endInterval}
             onPlay={this.startInterval}
           />
-          <Card variant="outlined" style={{  margin: 5 }}>
+          <Card variant="outlined" style={{ margin: 5 }}>
             <Grid container direction='row' justify='flex-start' alignItems='center'>
               <Grid item xs spacing={3}>
                 <span style={{ margin: 0, float: 'left' }}>
                   <h4 style={{ margin: '0px 0px 0px 15px', float: 'left' }}>{'Transcript:'}</h4>
-                  <HtmlTooltip title={tooltip}>
-                    <InfoIcon color='action' style={{ marginLeft: 3, fontSize: 20 }} />
-                  </HtmlTooltip>
+                  <InfoIcon
+                    className='clickable-text'
+                    color='action'
+                    aria-describedby={Boolean(anchorEl) ? 'tooltip' : undefined}
+                    style={{ marginLeft: 3, fontSize: 20 }}
+                    onClick={this.onTooltipOpen}
+                  // onMouseLeave={this.onTooltipClose}
+                  />
+                  <Popover
+                    id={Boolean(anchorEl) ? 'tooltip' : undefined}
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={this.onTooltipClose}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
+                    }}
+                  >
+                    {tooltip}
+                  </Popover>
                 </span>
               </Grid>
               <Grid item xs spacing={3}>
