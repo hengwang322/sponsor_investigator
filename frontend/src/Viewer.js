@@ -2,6 +2,10 @@ import React from 'react';
 import YouTube from 'react-youtube';
 import Switch from '@material-ui/core/Switch';
 import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
+import InfoIcon from '@material-ui/icons/Info';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
 
 class Viewer extends React.Component {
   constructor(props) {
@@ -122,7 +126,26 @@ class Viewer extends React.Component {
 
     const cardHeight = (height < 800) ? (height * 0.8) : (height * 0.85);
     const cardWidth = (width < 500) ? (width * 0.9) : 500;
+    const HtmlTooltip = withStyles(() => ({
+      tooltip: {
+        backgroundColor: 'white',
+        color: 'black',
+        fontSize: 15,
+        border: '1px solid #dadde9',
+        maxWidth: 450
+      },
+    }))(Tooltip);
 
+    const tooltip = <React.Fragment>
+      <p style={{ margin: 10, lineHeight: 1.75 }}>
+        {'Sponsored segments are highlighted in '}
+        <span style={{ backgroundColor: 'rgb(100,149,237)' }}>{'blue'}</span>{'. '}<br />
+        {'Darker color indicates higher confidence.'} <br />
+        {'Current transcript is marked in '}<strong>{'bold'}</strong>. <br />
+        {'Click on a transcript to jump to the section in the video.'}<br />
+        {'You can enable auto scroll to keep transcript in sync with the video.'}
+      </p>
+    </React.Fragment>;
     return (
       <div>
         <Card style={{
@@ -136,24 +159,36 @@ class Viewer extends React.Component {
             onPause={this.endInterval}
             onPlay={this.startInterval}
           />
-          <span style={{ margin: 2 }}>
-            {'Enable Auto Scroll?'}
-            <Switch
-              checked={isScroll}
-              onChange={this.onSwitchScroll}
-              size='small'
-            />
-          </span>
-          <p style={{ margin: 5, fontSize: 12, color: 'grey' }}>
-            <span>Sponsored segments are marked in blue. Darker color indicates higher confidence.</span>
-          </p>
-          <div
-            id='text-container'
-            style={{ height: (cardHeight - 350), overflowY: 'scroll', padding: 10 }}
-          >
-            <span id={-1} />
-            {text}
-          </div>
+          <Card variant="outlined" style={{ backgroundColor: 'rgb(250,250,250)', margin: 5 }}>
+            <Grid container direction='row' justify='flex-start' alignItems='center'>
+              <Grid item xs spacing={3}>
+                <span style={{ margin: 5, float: 'left' }}>
+                  <h3 style={{ margin: 0, float: 'left' }}>{'Transcript: '}</h3>
+                  <HtmlTooltip title={tooltip}>
+                    <InfoIcon color='action' style={{ marginLeft: 3, fontSize: 25 }} />
+                  </HtmlTooltip>
+                </span>
+              </Grid>
+              <Grid item xs spacing={3}>
+                <span style={{ margin: 5, float: 'right' }}>
+                  {'Enable Auto Scroll?'}
+                  <Switch
+                    checked={isScroll}
+                    onChange={this.onSwitchScroll}
+                    size='small'
+                  />
+                </span>
+              </Grid>
+            </Grid>
+            <div
+              id='text-container'
+              style={{ height: (cardHeight - 350), overflowY: 'scroll', padding: 10 }}
+            >
+              <span id={-1} />
+              {text}
+            </div>
+          </Card>
+
         </Card>
       </div>
     );
