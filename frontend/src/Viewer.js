@@ -130,7 +130,7 @@ class Viewer extends React.Component {
       tooltip: {
         backgroundColor: 'white',
         color: 'black',
-        fontSize: 15,
+        fontSize: 14,
         border: '1px solid #dadde9',
         maxWidth: 450
       },
@@ -159,13 +159,13 @@ class Viewer extends React.Component {
             onPause={this.endInterval}
             onPlay={this.startInterval}
           />
-          <Card variant="outlined" style={{ backgroundColor: 'rgb(250,250,250)', margin: 5 }}>
+          <Card variant="outlined" style={{  margin: 5 }}>
             <Grid container direction='row' justify='flex-start' alignItems='center'>
               <Grid item xs spacing={3}>
-                <span style={{ margin: 5, float: 'left' }}>
-                  <h3 style={{ margin: 0, float: 'left' }}>{'Transcript: '}</h3>
+                <span style={{ margin: 0, float: 'left' }}>
+                  <h4 style={{ margin: '0px 0px 0px 15px', float: 'left' }}>{'Transcript:'}</h4>
                   <HtmlTooltip title={tooltip}>
-                    <InfoIcon color='action' style={{ marginLeft: 3, fontSize: 25 }} />
+                    <InfoIcon color='action' style={{ marginLeft: 3, fontSize: 20 }} />
                   </HtmlTooltip>
                 </span>
               </Grid>
