@@ -1,6 +1,9 @@
 node_modules/
 
 build/
+data/
+log/
+__pycache__
 
 # misc
 .DS_Store
