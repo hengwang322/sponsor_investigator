@@ -35,13 +35,19 @@ class Viewer extends React.Component {
     if (this.state.player) { currentTime = this.state.player.getCurrentTime(); };
     for (i = 0; i < this.state.data.length; i++) {
       if (this.state.data[i]['start'] > currentTime) {
-        this.setState({ segment: i === 0 ? 0 : i - 1 });
-        if (this.state.isScroll) {
-          document.getElementById(this.state.segment)
-            .scrollIntoView({ block: 'center' });
-        }
+        this.setState({ segment: i - 1 }, this.onScroll);
         break;
       }
+    }
+    if (i === this.state.data.length) {
+      this.setState({ segment: this.state.data.length - 1 }, this.onScroll);
+    }
+  };
+
+  onScroll = () => {
+    if (this.state.isScroll) {
+      document.getElementById(this.state.segment)
+        .scrollIntoView({ block: 'center' });
     }
   };
 
@@ -164,7 +170,6 @@ class Viewer extends React.Component {
                     aria-describedby={Boolean(anchorEl) ? 'tooltip' : undefined}
                     style={{ marginLeft: 3, fontSize: 20 }}
                     onClick={this.onTooltipOpen}
-                  // onMouseLeave={this.onTooltipClose}
                   />
                   <Popover
                     id={Boolean(anchorEl) ? 'tooltip' : undefined}
@@ -203,7 +208,6 @@ class Viewer extends React.Component {
               {text}
             </div>
           </Card>
-
         </Card>
       </div>
     );
