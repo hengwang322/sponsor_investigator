@@ -12,6 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
 import Card from '@material-ui/core/Card';
 import vidList from './sampleVideo.json';
+import About from './About.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class App extends React.Component {
       errMsg: '',
       loading: false,
       width: window.innerWidth,
+      isAboutOpen: false
     };
   }
 
@@ -106,10 +108,13 @@ class App extends React.Component {
 
   handleResize = () => this.setState({ width: window.innerWidth });
 
+  onOpenAbout = () => this.setState({ isAboutOpen: true });
+
+  onCloseAbout = () => this.setState({ isAboutOpen: false });
 
   render() {
     const { width, isLoaded, loading, showError, value,
-      data, videoId, showAlert, errMsg } = this.state;
+      data, videoId, showAlert, errMsg, isAboutOpen } = this.state;
     const searchWidthUnload = () => {
       if (width <= 360) { return width * 0.8; }
       else if (width >= 600) { return 560; }
@@ -191,6 +196,11 @@ class App extends React.Component {
             <h3>{'BEEP BOOP. Processing...'}</h3>
           </Card>
         </Backdrop>
+        <About
+          onOpen={this.onOpenAbout}
+          onClose={this.onCloseAbout}
+          isOpen={isAboutOpen}
+        />
       </div>
     );
   }
