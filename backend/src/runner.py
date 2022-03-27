@@ -9,6 +9,7 @@ from loader import model, tokenizer
 MAX_LEN = 3000
 OVERLAP = 800
 
+VERSION = '2022-03-27'
 
 def strip_punctuations(s):
     PUNCTUATIONS = "(!|\"|#|\$|%|&|\(|\)|\*|\+|,|-|\.|/|:|;\<|=|>|\?|@|\[|\\\\|\]|\^|_|`|\{|\||\}|~|\t|\n)+"
@@ -103,6 +104,7 @@ def handler(event, context):
         return {'statusCode': 400,
                 'headers': headers,
                 'videoId': vid,
+                'version': VERSION,
                 'errorMessage': 'Bad request'}
     try:
         transcript = YouTubeTranscriptApi.get_transcript(
@@ -114,6 +116,7 @@ def handler(event, context):
             return {'statusCode': 404,
                     'headers': headers,
                     'videoId': vid,
+                    'version': VERSION,
                     'errorMessage': error_msg}
         elif type(e).__name__ == 'TranscriptsDisabled':
             error_msg = 'Cannot fetch transcript. It\'s likely the video and/or its subtitle is disabled. Please try another one.'
@@ -121,6 +124,7 @@ def handler(event, context):
             return {'statusCode': 404,
                     'headers': headers,
                     'videoId': vid,
+                    'version': VERSION,
                     'errorMessage': error_msg}
         elif type(e).__name__ == 'TooManyRequests':
             error_msg = 'Too many requests.'
@@ -128,6 +132,7 @@ def handler(event, context):
             return {'statusCode': 429,
                     'headers': headers,
                     'videoId': vid,
+                    'version': VERSION,
                     'errorMessage': error_msg}
         else:
             error_msg = 'Cannot fetch transcript. Please try another one.'
@@ -135,6 +140,7 @@ def handler(event, context):
             return {'statusCode': 404,
                     'videoId': vid,
                     'headers': headers,
+                    'version': VERSION,
                     'errorMessage': error_msg}
 
     labelled_transcript = get_labelled_transcript(transcript)
@@ -144,5 +150,6 @@ def handler(event, context):
     return {'statusCode': 200,
             'headers': headers,
             'videoId': vid,
+            'version': VERSION,
             'transcript': eval(str(labelled_transcript)),
             'processTime': f'{(t_end - t_start):.2f}'}
