@@ -1,4 +1,0 @@
--r prod.txt
-
-pandas==1.4.1
-scikit-learn==1.0.2

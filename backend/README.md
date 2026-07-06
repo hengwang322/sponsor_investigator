@@ -1,44 +1,31 @@
 # Sponsor investigator: backend
 
-## Scrape the data
+## Installation
+This backend is tested on Python 3.14. To install dependencies, run:
 
-To get raw, labelled data, run the following script in the backend directory:
+    pip install -r requirements.txt
 
-    python ./src/scraper.py
+If you're running it on a cloud platform, chances are YouTube has blocked the IP addresses. You can supply a proxy via the environmental variables `PROXY_HTTP_URL` or `PROXY_HTTPS_URL` to bypass this. To learn more, refer to [the documentation](https://github.com/jdepoix/youtube-transcript-api#working-around-ip-bans-requestblocked-or-ipblocked-exception) of YouTube Transcript API. 
 
-This will get the database dump from the [SponsorBlock](https://sponsor.ajay.app) project
-to get the sponsor timestamp, and use the `youtube_transcript_api` package to scrape the transcript
-of each video. The output will be a json file that contains the raw text file & timestamp.
 
-Note you will likely to run into rate limit at some point when scraping the transcripts. The python script will stop
-after 10 consecutive failed attempts and write a `checkpoint` file. You can resume scraping after waiting for
-some time and/or change your ip.
+## Local Deployment
+This backend can be deployed locally. The `serve.py` entrypoint uses a `bottle` web framework. To serve directly, run:
 
-## Preprocess the data
+    python serve.py
 
-To clean the transcript and prepare tokenizer and the embedding layer, run the following script in the backend directory:
+To serve with Gunicorn, run:
 
-    python ./src/preprocessor.py
+    gunicorn --bind 127.0.0.1:8080 serve:app
 
-Note in this step the script will download and unzip the pre-trained word vectors file from fastText, which will occupy ~2.1 GB of local storage.
+To invoke locally, run:
+    
+    curl -XPOST "http://127.0.0.1:8080/predict" -d '{ "vid": "IYSzJmZ6b0U"}'
 
-## Train the model
 
-To start training, run the following script in the backend directory:
+## AWS Lambda Deployment
 
-    python ./src/trainer.py
+To deploy it as a AWS Lambda function via the .zip method, run:
 
-## Deployment
+    bash build.sh
 
-This backend is meant for used as a AWS Lambda function. To start, build a docker image based on the Lambda base Python image,
-run the following script in the backend directory:
-
-    docker build -t sponsor-backend .
-
-Then you can run the image locally via:
-
-    docker run -p 9000:8080 sponsor-backend:latest
-
-And the lambda function can be invoked locally like this:
-
-    curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{ "vid": "IYSzJmZ6b0U"}'
+This will generate a zip archive, with dependencies bundled under `site-packages` folder. Set `PYTHONPATH` to `/var/task/site-packages` in Lambda to properly use the dependencies.

@@ -1,0 +1,14 @@
+bottle==0.13.4
+certifi==2026.6.17
+charset-normalizer==3.4.7
+defusedxml==0.7.1
+flatbuffers==25.12.19
+gunicorn==26.0.0
+idna==3.18
+numpy==2.5.1
+onnxruntime==1.27.0
+packaging==26.2
+protobuf==7.35.1
+requests==2.34.2
+urllib3==2.7.0
+youtube-transcript-api==1.2.4
